@@ -1,24 +1,1393 @@
-Introduce the complete bilingual SENGA Digital Operations Platform in Kiswahili and English.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#09264d">
+<title>SENGA | Enterprise Management System</title>
 
-Includes:
-- Bilingual language selection and navigation.
-- Customer registration and management.
-- Service catalogue and booking management.
-- Service request registration and tracking.
-- Contract management.
-- Finance and payment records.
-- LEGAL360 legal matter register.
-- Geographical service coverage across eight countries.
-- Tanzania regional coverage.
-- 16 operational divisions (AT01–AT16).
-- IndexedDB media library for images, audio and video.
-- Operational reports and CSV export.
-- JSON database backup and restoration.
-- SENGA homepage with existing portrait asset (senga-homepage.jpg).
+<style>
+:root{
+--navy:#09264d;
+--blue:#124b83;
+--gold:#d4af37;
+--green:#087d61;
+--cream:#f5f7fa;
+--white:#fff;
+--red:#b52b37;
+--text:#192b42;
+--muted:#718096;
+}
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+background:var(--cream);
+color:var(--text);
+}
+header{
+background:var(--navy);
+color:white;
+padding:14px 18px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{
+width:43px;height:43px;border:2px solid var(--gold);
+border-radius:10px;display:grid;place-items:center;
+font-weight:bold;color:var(--gold);font-size:20px;
+}
+.brand h1{font-size:19px;margin:0}
+.brand small{color:#d8e2ee}
+.header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+button,select,input,textarea{
+font:inherit;
+}
+button{
+border:0;border-radius:6px;padding:10px 14px;
+cursor:pointer;font-weight:600;
+}
+button:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:var(--blue);color:white}
+.gold{background:var(--gold);color:#17243a}
+.green{background:var(--green);color:white}
+.danger{background:var(--red);color:white}
+.light{background:#e8eef5;color:var(--navy)}
+.small{padding:6px 9px;font-size:12px}
+.app{display:grid;grid-template-columns:245px 1fr;min-height:calc(100vh - 70px)}
+.sidebar{
+background:#102f53;color:white;padding:15px 10px;
+}
+.sidebar h3{
+font-size:11px;text-transform:uppercase;
+letter-spacing:1px;color:#b6c8db;padding:8px 12px;
+}
+.navbtn{
+width:100%;text-align:left;background:transparent;
+color:#e8eff8;padding:11px 12px;margin:2px 0;
+border-radius:6px;font-size:13px;
+}
+.navbtn:hover,.navbtn.active{background:#24517c;color:white}
+main{padding:20px;min-width:0}
+.page{display:none}
+.page.active{display:block}
+.page-title{
+display:flex;justify-content:space-between;align-items:center;
+flex-wrap:wrap;gap:10px;margin-bottom:18px;
+}
+.page-title h2{margin:0;color:var(--navy)}
+.card{
+background:white;border:1px solid #e2e8f0;
+border-radius:10px;padding:17px;margin-bottom:16px;
+box-shadow:0 2px 8px rgba(0,0,0,.035);
+}
+.grid{
+display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+gap:13px;margin-bottom:18px;
+}
+.stat{
+background:white;border-radius:9px;padding:16px;
+border-left:4px solid var(--gold);
+}
+.stat small{color:var(--muted)}
+.stat strong{display:block;font-size:25px;margin-top:8px;color:var(--navy)}
+.module-grid{
+display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;
+}
+.module{
+background:white;border:1px solid #dce4ed;border-radius:9px;
+padding:15px;cursor:pointer;min-height:110px;
+}
+.module:hover{border-color:var(--gold);transform:translateY(-2px)}
+.module strong{display:block;color:var(--navy);margin:7px 0}
+.module small{color:var(--muted)}
+.form-grid{
+display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;
+}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:12px;font-weight:bold;color:#40536b}
+.field input,.field select,.field textarea,
+.searchbox{
+width:100%;padding:10px;border:1px solid #ccd6e2;
+border-radius:6px;background:white;min-width:0;
+}
+.field textarea{min-height:85px;resize:vertical}
+.full{grid-column:1/-1}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:13px}
+th,td{padding:11px;border-bottom:1px solid #e5eaf0;text-align:left}
+th{background:#edf2f7;color:var(--navy)}
+td{vertical-align:middle}
+.status{
+display:inline-block;padding:4px 8px;border-radius:20px;
+background:#e6f5ed;color:#087d61;font-size:11px;
+}
+.muted{color:var(--muted);font-size:12px}
+.notice{
+padding:11px;background:#fff8e5;border-left:4px solid var(--gold);
+border-radius:5px;font-size:13px;margin:12px 0;
+}
+.hidden{display:none!important}
+footer{
+padding:18px;text-align:center;color:var(--muted);font-size:12px;
+}
+.profile{
+width:100%;max-height:240px;object-fit:cover;
+border-radius:9px;border:2px solid var(--gold);
+}
+#toast{
+position:fixed;bottom:20px;right:20px;
+background:var(--navy);color:white;padding:13px 18px;
+border-radius:7px;display:none;z-index:1000;
+}
+@media(max-width:900px){
+.app{grid-template-columns:1fr}
+.sidebar{display:flex;overflow-x:auto;gap:5px;padding:8px}
+.sidebar h3{display:none}
+.navbtn{width:auto;white-space:nowrap}
+.grid{grid-template-columns:repeat(2,1fr)}
+.module-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:520px){
+main{padding:12px}
+.form-grid{grid-template-columns:1fr}
+.full{grid-column:auto}
+.grid{gap:8px}
+.stat{padding:11px}
+.stat strong{font-size:20px}
+.module-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.brand h1{font-size:15px}
+}
+</style>
+</head>
 
-STORAGE AND DEPLOYMENT:
-Operational records are stored in browser local storage.
-Media files are stored in browser IndexedDB.
-Cloud storage, multi-user access and automatic synchronisation between devices are not yet implemented.
+<body>
 
-This release establishes the bilingual browser-based operational platform for SENGA.
+<header>
+ <div class="brand">
+  <div class="logo">S</div>
+  <div>
+   <h1>SENGA BIZSUITE</h1>
+   <small>Enterprise Management System</small>
+  </div>
+ </div>
+ <div class="header-actions">
+  <span id="databaseStatus" style="font-size:11px">Initialising database...</span>
+  <button class="gold" onclick="toggleLanguage()" id="languageButton">Kiswahili</button>
+  <button class="light" onclick="showPage('dashboard')">Home</button>
+ </div>
+</header>
+
+<div class="app">
+
+<aside class="sidebar">
+ <h3>Command Centre</h3>
+ <button class="navbtn active" onclick="showPage('dashboard')" data-en="Dashboard" data-sw="Dashibodi">Dashboard</button>
+ <button class="navbtn" onclick="showPage('modules')" data-en="Business Services" data-sw="Huduma za Biashara">Business Services</button>
+ <button class="navbtn" onclick="showPage('customers')" data-en="Customers" data-sw="Wateja">Customers</button>
+ <button class="navbtn" onclick="showPage('requests')" data-en="Service Register" data-sw="Daftari la Huduma">Service Register</button>
+ <button class="navbtn" onclick="showPage('bookings')" data-en="Bookings" data-sw="Uhifadhi">Bookings</button>
+ <button class="navbtn" onclick="showPage('contracts')" data-en="Contracts" data-sw="Mikataba">Contracts</button>
+ <button class="navbtn" onclick="showPage('finance')" data-en="Finance & Payments" data-sw="Fedha na Malipo">Finance & Payments</button>
+ <button class="navbtn" onclick="showPage('media')" data-en="Digital Documents" data-sw="Nyaraka za Kidijitali">Digital Documents</button>
+ <button class="navbtn" onclick="showPage('reports')" data-en="Reports" data-sw="Ripoti">Reports</button>
+
+ <h3>Administration</h3>
+ <button class="navbtn" onclick="showPage('regions')" data-en="Regional Administration" data-sw="Utawala wa Mikoa">Regional Administration</button>
+ <button class="navbtn" onclick="showPage('legal')" data-en="LEGAL360" data-sw="LEGAL360">LEGAL360</button>
+ <button class="navbtn" onclick="showPage('settings')" data-en="System Settings" data-sw="Mipangilio">System Settings</button>
+</aside>
+
+<main>
+
+<!-- DASHBOARD -->
+<section class="page active" id="dashboard">
+ <div class="page-title">
+  <div>
+   <h2 data-en="Enterprise Command Centre" data-sw="Kituo Kikuu cha Biashara">Enterprise Command Centre</h2>
+   <p class="muted">SENGA | English – Kiswahili</p>
+  </div>
+  <button class="primary" onclick="showPage('requests')">+ New Service Request</button>
+ </div>
+
+ <div class="grid">
+  <div class="stat"><small>Total Customers</small><strong id="customerCount">0</strong></div>
+  <div class="stat"><small>Service Requests</small><strong id="requestCount">0</strong></div>
+  <div class="stat"><small>Bookings</small><strong id="bookingCount">0</strong></div>
+  <div class="stat"><small>Recorded Payments</small><strong id="paymentTotal">TZS 0</strong></div>
+ </div>
+
+ <div class="card">
+  <h3>Welcome to SENGA BizSuite</h3>
+  <p>Centralised business administration, customer services, bookings, contracts, finance and operational reporting.</p>
+  <div class="notice">
+   Operational records are stored locally in this browser using IndexedDB. They are not automatically synchronised between devices.
+  </div>
+ </div>
+
+ <div class="card">
+  <h3>Recent Service Requests</h3>
+  <div class="table-wrap">
+   <table>
+    <thead><tr><th>Number</th><th>Customer</th><th>Service</th><th>Date</th><th>Status</th></tr></thead>
+    <tbody id="recentRequests"></tbody>
+   </table>
+  </div>
+ </div>
+
+ <div class="card">
+  <h3>System Identity</h3>
+  <p><strong>SENGA Enterprise Management System</strong></p>
+  <p class="muted">Developed by AAMush Technologies | Tanzania</p>
+ </div>
+</section>
+
+<!-- MODULES -->
+<section class="page" id="modules">
+ <div class="page-title"><h2>Business Services – 16 Units</h2></div>
+ <p class="muted">Select a unit to open its operational workspace.</p>
+ <div class="module-grid" id="moduleGrid"></div>
+</section>
+
+<!-- SERVICE WORKSPACE -->
+<section class="page" id="serviceWorkspace">
+ <div class="page-title">
+  <h2 id="serviceTitle">Service Workspace</h2>
+  <button class="light" onclick="showPage('modules')">Back to Services</button>
+ </div>
+ <div class="card">
+  <p id="serviceDescription"></p>
+  <h3>Register a Service Activity</h3>
+  <form id="serviceActivityForm">
+   <input type="hidden" id="activityUnit">
+   <div class="form-grid">
+    <div class="field"><label>Customer</label><select id="activityCustomer"></select></div>
+    <div class="field"><label>Activity Date</label><input type="date" id="activityDate" required></div>
+    <div class="field"><label>Reference Number</label><input id="activityReference"></div>
+    <div class="field"><label>Fees (TZS)</label><input type="number" min="0" id="activityFees" value="0"></div>
+    <div class="field full"><label>Activity Details</label><textarea id="activityDetails" required></textarea></div>
+   </div>
+   <div class="actions"><button class="primary">Save Activity</button></div>
+  </form>
+ </div>
+ <div class="card">
+  <h3>Unit Activity Register</h3>
+  <div class="table-wrap"><table>
+   <thead><tr><th>Date</th><th>Customer</th><th>Reference</th><th>Fees</th><th>Details</th></tr></thead>
+   <tbody id="activityRows"></tbody>
+  </table></div>
+ </div>
+</section>
+
+<!-- CUSTOMERS -->
+<section class="page" id="customers">
+ <div class="page-title"><h2>Customer Management</h2></div>
+ <div class="card">
+  <h3>Customer Registration</h3>
+  <form id="customerForm">
+   <div class="form-grid">
+    <div class="field"><label>Full Name / Business Name</label><input id="customerName" required></div>
+    <div class="field"><label>Customer Type</label>
+     <select id="customerType"><option>Individual</option><option>Company</option><option>Institution</option><option>Government</option><option>NGO</option></select>
+    </div>
+    <div class="field"><label>Telephone</label><input id="customerPhone"></div>
+    <div class="field"><label>Email</label><input type="email" id="customerEmail"></div>
+    <div class="field"><label>Country</label><input id="customerCountry" value="Tanzania"></div>
+    <div class="field"><label>Address</label><input id="customerAddress"></div>
+   </div>
+   <div class="actions"><button class="primary">Register Customer</button></div>
+  </form>
+ </div>
+ <div class="card">
+  <h3>Customer Register</h3>
+  <input class="searchbox" placeholder="Search customers..." oninput="renderCustomers(this.value)">
+  <div class="table-wrap"><table>
+   <thead><tr><th>Customer ID</th><th>Name</th><th>Type</th><th>Telephone</th><th>Email</th><th>Action</th></tr></thead>
+   <tbody id="customerRows"></tbody>
+  </table></div>
+ </div>
+</section>
+
+<!-- REQUESTS -->
+<section class="page" id="requests">
+ <div class="page-title"><h2>Service Request Register</h2></div>
+ <div class="card">
+  <h3>New Service Request</h3>
+  <form id="requestForm">
+   <div class="form-grid">
+    <div class="field"><label>Customer</label><select id="requestCustomer" required></select></div>
+    <div class="field"><label>Service Unit</label><select id="requestService" required></select></div>
+    <div class="field"><label>Region</label><select id="bookingRegion" required></select></div>
+    <div class="field"><label>City / Municipality / District</label><input id="bookingTown" list="districtOptions" placeholder="Enter district or municipality"></div>
+    <datalist id="districtOptions"></datalist>
+    <div class="field"><label>Town / Area</label><input id="requestArea"></div>
+    <div class="field"><label>Request Date</label><input type="date" id="requestDate" required></div>
+    <div class="field"><label>Fees (TZS)</label><input type="number" min="0" id="requestFees" value="0"></div>
+    <div class="field"><label>Status</label>
+     <select id="requestStatus"><option>Pending</option><option>In Progress</option><option>Completed</option><option>Cancelled</option></select>
+    </div>
+    <div class="field full"><label>Request Description</label><textarea id="requestDescription" required></textarea></div>
+   </div>
+   <div class="actions"><button class="primary">Save Service Request</button></div>
+  </form>
+ </div>
+ <div class="card">
+  <h3>Service Request Register</h3>
+  <div class="table-wrap"><table>
+   <thead><tr>
+    <th>Number</th><th>Customer</th><th>Service</th><th>Area</th>
+    <th>Date</th><th>Fees</th><th>Status</th><th>Action</th>
+   </tr></thead>
+   <tbody id="requestRows"></tbody>
+  </table></div>
+ </div>
+</section>
+
+<!-- BOOKINGS -->
+<section class="page" id="bookings">
+ <div class="page-title"><h2>Booking Management</h2></div>
+ <div class="card">
+  <form id="bookingForm">
+   <div class="form-grid">
+    <div class="field"><label>Customer</label><select id="bookingCustomer" required></select></div>
+    <div class="field"><label>Service</label><select id="bookingService" required></select></div>
+    <div class="field"><label>Booking Date</label><input type="date" id="bookingDate" required></div>
+    <div class="field"><label>Booking Time</label><input type="time" id="bookingTime"></div>
+    <div class="field"><label>Location</label><input id="bookingLocation"></div>
+    <div class="field"><label>Booking Status</label><select id="bookingStatus"><option>Pending</option><option>Confirmed</option><option>Completed</option><option>Cancelled</option></select></div>
+    <div class="field full"><label>Notes</label><textarea id="bookingNotes"></textarea></div>
+   </div>
+   <div class="actions"><button class="primary">Save Booking</button></div>
+  </form>
+ </div>
+ <div class="card"><h3>Booking Register</h3>
+  <div class="table-wrap"><table>
+   <thead><tr><th>Number</th><th>Customer</th><th>Service</th><th>Date</th><th>Time</th><th>Location</th><th>Status</th><th>Action</th></tr></thead>
+   <tbody id="bookingRows"></tbody>
+  </table></div>
+ </div>
+</section>
+
+<!-- CONTRACTS -->
+<section class="page" id="contracts">
+ <div class="page-title"><h2>Contract Management</h2></div>
+ <div class="card">
+  <form id="contractForm">
+   <div class="form-grid">
+    <div class="field"><label>Customer / Contracting Party</label><select id="contractCustomer" required></select></div>
+    <div class="field"><label>Contract Reference</label><input id="contractReference" required></div>
+    <div class="field"><label>Start Date</label><input type="date" id="contractStart"></div>
+    <div class="field"><label>End Date</label><input type="date" id="contractEnd"></div>
+    <div class="field"><label>Contract Value (TZS)</label><input type="number" min="0" id="contractValue"></div>
+    <div class="field"><label>Status</label><select id="contractStatus"><option>Draft</option><option>Active</option><option>Expired</option><option>Terminated</option></select></div>
+    <div class="field full"><label>Contract Description</label><textarea id="contractDescription"></textarea></div>
+   </div>
+   <div class="actions"><button class="primary">Save Contract</button></div>
+  </form>
+ </div>
+ <div class="card"><h3>Contract Register</h3>
+  <div class="table-wrap"><table>
+   <thead><tr><th>Reference</th><th>Party</th><th>Start</th><th>End</th><th>Value</th><th>Status</th></tr></thead>
+   <tbody id="contractRows"></tbody>
+  </table></div>
+ </div>
+</section>
+
+<!-- FINANCE -->
+<section class="page" id="finance">
+ <div class="page-title"><h2>Finance & Payment Management</h2></div>
+ <div class="grid">
+  <div class="stat"><small>Total Recorded Receipts</small><strong id="financeReceipts">TZS 0</strong></div>
+  <div class="stat"><small>Outstanding Balances</small><strong id="financeBalance">TZS 0</strong></div>
+ </div>
+ <div class="card">
+  <h3>Record Customer Payment</h3>
+  <form id="paymentForm">
+   <div class="form-grid">
+    <div class="field"><label>Customer</label><select id="paymentCustomer" required></select></div>
+    <div class="field"><label>Related Service Request</label><select id="paymentRequest"></select></div>
+    <div class="field"><label>Payment Date</label><input type="date" id="paymentDate" required></div>
+    <div class="field"><label>Amount Received</label><input type="number" min="0.01" step="0.01" id="paymentAmount" required></div>
+    <div class="field"><label>Currency</label>
+     <select id="paymentCurrency">
+      <option>TZS</option><option>KES</option><option>UGX</option><option>RWF</option><option>BIF</option><option>MWK</option><option>ZMW</option><option>USD</option>
+     </select>
+    </div>
+    <div class="field"><label>Payment Method</label><select id="paymentMethod"><option>Cash</option><option>Bank Transfer</option><option>Mobile Money</option><option>Cheque</option><option>Other</option></select></div>
+    <div class="field"><label>Transaction Reference</label><input id="paymentReference"></div>
+    <div class="field"><label>Notes</label><input id="paymentNotes"></div>
+   </div>
+   <div class="actions"><button class="primary">Record Payment</button></div>
+  </form>
+ </div>
+ <div class="card">
+  <h3>Payment Register</h3>
+  <div class="table-wrap"><table>
+   <thead><tr><th>Reference</th><th>Customer</th><th>Date</th><th>Amount</th><th>Currency</th><th>Method</th></tr></thead>
+   <tbody id="paymentRows"></tbody>
+  </table></div>
+ </div>
+ <div class="notice">Payments are recorded in their original currency. No automatic foreign-exchange conversion is applied. Historical bank-conversion reconciliation must use documented exchange rates and transaction evidence.</div>
+</section>
+
+<!-- DIGITAL DOCUMENTS -->
+<section class="page" id="media">
+ <div class="page-title"><h2>Digital Documents & Media</h2></div>
+ <div class="card">
+  <h3>Upload Operational Document or Video</h3>
+  <form id="mediaForm">
+   <div class="form-grid">
+    <div class="field"><label>Document Title</label><input id="mediaTitle" required></div>
+    <div class="field"><label>Document Category</label><select id="mediaCategory"><option>Customer Document</option><option>Contract</option><option>Service Evidence</option><option>Video Evidence</option><option>Financial Document</option><option>Other</option></select></div>
+    <div class="field full"><label>Select File</label><input type="file" id="mediaFile" required></div>
+   </div>
+   <div class="actions"><button class="primary">Save Document</button></div>
+  </form>
+  <div class="notice">Files are stored in this browser's IndexedDB. Large video files require sufficient device storage. Keep separate backups.</div>
+ </div>
+ <div class="card"><h3>Document Register</h3>
+  <div class="table-wrap"><table>
+   <thead><tr><th>Title</th><th>Category</th><th>File</th><th>Date</th><th>Action</th></tr></thead>
+   <tbody id="mediaRows"></tbody>
+  </table></div>
+ </div>
+</section>
+
+<!-- REPORTS -->
+<section class="page" id="reports">
+ <div class="page-title"><h2>Reports & Business Intelligence</h2></div>
+ <div class="grid">
+  <div class="stat"><small>Customers</small><strong id="reportCustomers">0</strong></div>
+  <div class="stat"><small>Requests</small><strong id="reportRequests">0</strong></div>
+  <div class="stat"><small>Bookings</small><strong id="reportBookings">0</strong></div>
+  <div class="stat"><small>Contracts</small><strong id="reportContracts">0</strong></div>
+ </div>
+ <div class="card">
+  <h3>Report Exports</h3>
+  <p>Export operational registers as CSV files for spreadsheet analysis.</p>
+  <div class="actions">
+   <button class="primary" onclick="exportCSV('customers')">Customers CSV</button>
+   <button class="primary" onclick="exportCSV('requests')">Requests CSV</button>
+   <button class="primary" onclick="exportCSV('bookings')">Bookings CSV</button>
+   <button class="primary" onclick="exportCSV('payments')">Payments CSV</button>
+   <button class="primary" onclick="exportCSV('contracts')">Contracts CSV</button>
+  </div>
+ </div>
+ <div class="card">
+  <h3>Print Reports</h3>
+  <button class="green" onclick="window.print()">Print Current Page</button>
+ </div>
+</section>
+
+<!-- REGIONS -->
+<section class="page" id="regions">
+ <div class="page-title"><h2>Regional Administration – Tanzania</h2></div>
+ <div class="card">
+  <p>Master administrative register: 26 Mainland regions and 5 Zanzibar regions.</p>
+  <div class="field">
+   <label>Explore Region</label>
+   <select id="regionExplorer"></select>
+  </div>
+  <div class="field" style="margin-top:12px">
+   <label>City / Municipality / District</label>
+   <input id="townExplorer" placeholder="Enter verified council or district">
+  </div>
+  <div class="notice" id="regionInfo">Select a region to begin.</div>
+  <p class="muted">Districts, councils, wards and streets must be populated from verified official administrative records. The system does not invent lower-level geographical entries.</p>
+ </div>
+ <div class="card">
+  <h3>Administrative Hierarchy</h3>
+  <p>Region → City / Municipality / District → Town / Area → Ward → Street / Location.</p>
+  <p class="muted">The booking form retains the established bookingRegion and bookingTown identifiers. The explorer retains regionExplorer, townExplorer and regionInfo.</p>
+ </div>
+</section>
+
+<!-- LEGAL -->
+<section class="page" id="legal">
+ <div class="page-title"><h2>LEGAL360 – Legal Administration</h2></div>
+ <div class="card">
+  <h3>Legal Matter Register</h3>
+  <form id="legalForm">
+   <div class="form-grid">
+    <div class="field"><label>Case / Matter Reference</label><input id="legalReference" required></div>
+    <div class="field"><label>Client / Customer</label><select id="legalCustomer"></select></div>
+    <div class="field"><label>Matter Category</label><select id="legalCategory"><option>Contract</option><option>Compliance</option><option>Consultancy</option><option>Dispute</option><option>Regulatory</option><option>Other</option></select></div>
+    <div class="field"><label>Status</label><select id="legalStatus"><option>Open</option><option>Under Review</option><option>Pending</option><option>Closed</option></select></div>
+    <div class="field full"><label>Matter Description</label><textarea id="legalDescription" required></textarea></div>
+   </div>
+   <div class="actions"><button class="primary">Register Legal Matter</button></div>
+  </form>
+ </div>
+ <div class="card"><h3>Legal Register</h3>
+  <div class="table-wrap"><table>
+   <thead><tr><th>Reference</th><th>Client</th><th>Category</th><th>Status</th><th>Description</th></tr></thead>
+   <tbody id="legalRows"></tbody>
+  </table></div>
+ </div>
+ <div class="notice">LEGAL360 is an administrative record-management module, not a substitute for qualified legal advice or statutory legal services.</div>
+</section>
+
+<!-- SETTINGS -->
+<section class="page" id="settings">
+ <div class="page-title"><h2>System Settings & Data Management</h2></div>
+ <div class="card">
+  <h3>Business Identity</h3>
+  <p><strong>SENGA Enterprise Management System</strong></p>
+  <p>Platform: SengaBizSuite2026</p>
+  <p>Language: English / Kiswahili</p>
+  <p>Operational database: Browser IndexedDB</p>
+ </div>
+ <div class="card">
+  <h3>Backup and Restore</h3>
+  <p>Create a backup of customer, booking, service, financial and administrative records.</p>
+  <div class="actions">
+   <button class="primary" onclick="backupData()">Download Full Backup</button>
+   <button class="light" onclick="document.getElementById('restoreFile').click()">Restore Backup</button>
+   <input type="file" id="restoreFile" accept=".json,application/json" class="hidden">
+  </div>
+  <div class="notice">Restoring a backup replaces the current database records. Download a current backup before restoring.</div>
+ </div>
+ <div class="card">
+  <h3>System Storage</h3>
+  <p id="storageInfo">Checking local storage...</p>
+  <button class="light" onclick="refreshAll()">Refresh System</button>
+ </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+ SENGA Enterprise Management System | Developed by AAMush Technologies, Tanzania
+</footer>
+<div id="toast"></div>
+
+<script>
+"use strict";
+
+/* ==============================================
+   SENGA MASTER CONFIGURATION
+============================================== */
+
+const DB_NAME = "SENGA_BIZSUITE_DATABASE";
+const DB_VERSION = 1;
+
+const STORES = [
+ "customers","requests","bookings","contracts",
+ "payments","activities","media","legal"
+];
+
+const MODULES = [
+ ["AT01","Customer Relations Management","Manage customer registration, profiles and service history."],
+ ["AT02","Business Consultancy","Consultancy requests and professional assignments."],
+ ["AT03","Education & Advisory Services","Education access and academic advisory services."],
+ ["AT04","Project Management","Project assignments, implementation and monitoring."],
+ ["AT05","Legal & Regulatory Services","Legal administration and regulatory matters."],
+ ["AT06","Documentation & Records","Document preparation and records administration."],
+ ["AT07","Business Registration","Business registration and institutional documentation."],
+ ["AT08","Procurement & Supply","Procurement and supply-related service activities."],
+ ["AT09","Property & Land Services","Property and land-related service administration."],
+ ["AT10","Research & Analysis","Research, assessment and analytical assignments."],
+ ["AT11","Digital & Technology Services","Digital systems and technology service activities."],
+ ["AT12","Transport & Logistics","Transport and logistics service administration."],
+ ["AT13","Training & Capacity Development","Training and institutional capacity development."],
+ ["AT14","Financial Administration","Financial documentation and payment administration."],
+ ["AT15","Communication & Client Support","Communication and client support services."],
+ ["AT16","Special Projects & Other Services","Special projects and additional approved services."]
+];
+
+const REGIONS = [
+ "Arusha","Dar es Salaam","Dodoma","Geita","Iringa","Kagera",
+ "Katavi","Kigoma","Kilimanjaro","Lindi","Manyara","Mara",
+ "Mbeya","Morogoro","Mtwara","Mwanza","Njombe","Pwani",
+ "Rukwa","Ruvuma","Shinyanga","Simiyu","Singida","Songwe",
+ "Tabora","Tanga",
+ "Kaskazini Unguja","Kusini Unguja","Mjini Magharibi",
+ "Kaskazini Pemba","Kusini Pemba"
+];
+
+let db = null;
+let language = "en";
+let currentUnit = null;
+
+function uid(prefix){
+ return prefix + "-" + Date.now().toString(36).toUpperCase() +
+ "-" + Math.random().toString(36).slice(2,6).toUpperCase();
+}
+
+function today(){
+ return new Date().toISOString().slice(0,10);
+}
+
+function money(value,currency="TZS"){
+ return currency+" "+Number(value||0).toLocaleString("en-US");
+}
+
+function toast(message){
+ const t=document.getElementById("toast");
+ t.textContent=message;
+ t.style.display="block";
+ setTimeout(()=>t.style.display="none",3000);
+}
+
+/* ==============================================
+   DATABASE
+============================================== */
+
+function openDatabase(){
+ return new Promise((resolve,reject)=>{
+  const request=indexedDB.open(DB_NAME,DB_VERSION);
+
+  request.onupgradeneeded=event=>{
+   const database=event.target.result;
+   STORES.forEach(name=>{
+    if(!database.objectStoreNames.contains(name)){
+     database.createObjectStore(name,{keyPath:"id"});
+    }
+   });
+  };
+
+  request.onsuccess=event=>{
+   db=event.target.result;
+   document.getElementById("databaseStatus").textContent="Database ready";
+   resolve(db);
+  };
+
+  request.onerror=()=>reject(request.error);
+ });
+}
+
+function saveRecord(store,record){
+ return new Promise((resolve,reject)=>{
+  if(!db)return reject(new Error("Database unavailable"));
+  const tx=db.transaction(store,"readwrite");
+  tx.objectStore(store).put(record);
+  tx.oncomplete=()=>resolve(record);
+  tx.onerror=()=>reject(tx.error);
+ });
+}
+
+function getAll(store){
+ return new Promise((resolve,reject)=>{
+  if(!db)return reject(new Error("Database unavailable"));
+  const tx=db.transaction(store,"readonly");
+  const request=tx.objectStore(store).getAll();
+  request.onsuccess=()=>resolve(request.result||[]);
+  request.onerror=()=>reject(request.error);
+ });
+}
+
+function deleteRecord(store,id){
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(store,"readwrite");
+  tx.objectStore(store).delete(id);
+  tx.oncomplete=()=>resolve();
+  tx.onerror=()=>reject(tx.error);
+});
+
+/* ==============================================
+   NAVIGATION
+============================================== */
+
+function showPage(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ const page=document.getElementById(id);
+ if(page)page.classList.add("active");
+
+ document.querySelectorAll(".navbtn").forEach(b=>b.classList.remove("active"));
+ const nav=document.querySelector('.navbtn[onclick="showPage(\''+id+'\')"]');
+ if(nav)nav.classList.add("active");
+
+ refreshAll();
+}
+
+function openModule(code){
+ currentUnit=MODULES.find(m=>m[0]===code);
+ if(!currentUnit)return;
+
+ document.getElementById("serviceTitle").textContent =
+ currentUnit[0]+" – "+currentUnit[1];
+
+ document.getElementById("serviceDescription").textContent =
+ currentUnit[2];
+
+ document.getElementById("activityUnit").value=code;
+ document.getElementById("activityDate").value=today();
+
+ showPage("serviceWorkspace");
+ renderActivities();
+}
+
+/* ==============================================
+   LANGUAGE
+============================================== */
+
+function toggleLanguage(){
+ language=language==="en"?"sw":"en";
+ document.documentElement.lang=language;
+
+ document.querySelectorAll("[data-en]").forEach(element=>{
+  element.textContent=element.getAttribute("data-"+language);
+ });
+
+ document.getElementById("languageButton").textContent =
+ language==="en"?"Kiswahili":"English";
+}
+
+/* ==============================================
+   INITIALISATION
+============================================== */
+
+function initialise(){
+ document.getElementById("requestDate").value=today();
+ document.getElementById("bookingDate").value=today();
+ document.getElementById("paymentDate").value=today();
+ document.getElementById("activityDate").value=today();
+
+ const regionSelect=document.getElementById("bookingRegion");
+ const explorer=document.getElementById("regionExplorer");
+
+ REGIONS.forEach(region=>{
+  regionSelect.add(new Option(region,region));
+  explorer.add(new Option(region,region));
+ });
+
+ explorer.addEventListener("change",()=>{
+  document.getElementById("regionInfo").textContent =
+   "Selected region: "+explorer.value+
+   ". Enter a verified council, municipality or district.";
+  document.getElementById("townExplorer").value="";
+ });
+
+ document.getElementById("regionExplorer").addEventListener("change",()=>{
+  const selected=explorer.value;
+  document.getElementById("regionInfo").textContent=
+   "Selected region: "+selected+
+   ". Lower administrative levels require verified official data.";
+ });
+
+ document.getElementById("bookingRegion").addEventListener("change",updateTowns);
+
+ MODULES.forEach(module=>{
+  const card=document.createElement("div");
+  card.className="module";
+  card.innerHTML=
+   "<small>"+module[0]+"</small><strong>"+module[1]+"</strong>"+
+   "<small>Open operational workspace →</small>";
+  card.addEventListener("click",()=>openModule(module[0]));
+  document.getElementById("moduleGrid").appendChild(card);
+ });
+
+ populateServiceSelects();
+
+ openDatabase().then(refreshAll).catch(error=>{
+  document.getElementById("databaseStatus").textContent="Database error";
+  console.error(error);
+  toast("Database could not be opened.");
+ });
+}
+
+/* Preserve established function name and control IDs.
+   No unverified district data is inserted. */
+function updateTowns(){
+ const region=document.getElementById("bookingRegion").value;
+ document.getElementById("bookingTown").value="";
+ const options=document.getElementById("districtOptions");
+ options.innerHTML="";
+ document.getElementById("bookingTown").placeholder=
+  region?"Enter verified municipality or district in "+region:"Select a region first";
+}
+
+function populateServiceSelects(){
+ ["requestService","bookingService"].forEach(id=>{
+  const select=document.getElementById(id);
+  MODULES.forEach(m=>select.add(new Option(m[0]+" – "+m[1],m[0])));
+ });
+}
+
+/* ==============================================
+   CUSTOMER MANAGEMENT
+============================================== */
+
+document.getElementById("customerForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+
+ const record={
+  id:uid("CUS"),
+  name:customerName.value.trim(),
+  type:customerType.value,
+  phone:customerPhone.value.trim(),
+  email:customerEmail.value.trim(),
+  country:customerCountry.value.trim(),
+  address:customerAddress.value.trim(),
+  created:today()
+ };
+
+ if(!record.name)return;
+
+ await saveRecord("customers",record);
+ e.target.reset();
+ customerCountry.value="Tanzania";
+ toast("Customer registered.");
+ refreshAll();
+});
+
+async function renderCustomers(query=""){
+ const rows=await getAll("customers");
+ const tbody=document.getElementById("customerRows");
+ tbody.innerHTML="";
+
+ rows.filter(c=>(c.name+" "+c.phone+" "+c.email).toLowerCase().includes(query.toLowerCase()))
+ .forEach(c=>{
+  const tr=document.createElement("tr");
+  tr.innerHTML=`
+   <td>${escapeHTML(c.id)}</td>
+   <td>${escapeHTML(c.name)}</td>
+   <td>${escapeHTML(c.type)}</td>
+   <td>${escapeHTML(c.phone)}</td>
+   <td>${escapeHTML(c.email)}</td>
+   <td><button class="danger small" onclick="removeItem('customers','${c.id}')">Delete</button></td>`;
+  tbody.appendChild(tr);
+ });
+}
+
+/* ==============================================
+   SERVICE REQUESTS
+============================================== */
+
+document.getElementById("requestForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+
+ const customers=await getAll("customers");
+ const customer=customers.find(c=>c.id===requestCustomer.value);
+ if(!customer){toast("Register or select a customer first.");return;}
+
+ const record={
+  id:uid("SR"),
+  customerId:customer.id,
+  customer:customer.name,
+  service:requestService.value,
+  region:bookingRegion.value,
+  town:bookingTown.value.trim(),
+  area:requestArea.value.trim(),
+  date:requestDate.value,
+  fees:Number(requestFees.value||0),
+  status:requestStatus.value,
+  description:requestDescription.value.trim(),
+  created:new Date().toISOString()
+ };
+
+ await saveRecord("requests",record);
+ e.target.reset();
+ requestDate.value=today();
+ requestFees.value=0;
+ toast("Service request saved.");
+ refreshAll();
+});
+
+async function renderRequests(){
+ const records=await getAll("requests");
+ const tbody=document.getElementById("requestRows");
+ tbody.innerHTML="";
+
+ records.sort((a,b)=>b.created.localeCompare(a.created)).forEach(r=>{
+  const tr=document.createElement("tr");
+  tr.innerHTML=`
+   <td>${escapeHTML(r.id)}</td>
+   <td>${escapeHTML(r.customer)}</td>
+   <td>${escapeHTML(r.service)}</td>
+   <td>${escapeHTML([r.region,r.town,r.area].filter(Boolean).join(", "))}</td>
+   <td>${escapeHTML(r.date)}</td>
+   <td>${money(r.fees)}</td>
+   <td>
+    <select onchange="changeRequestStatus('${r.id}',this.value)">
+     ${["Pending","In Progress","Completed","Cancelled"].map(s=>
+      `<option ${s===r.status?"selected":""}>${s}</option>`).join("")}
+    </select>
+   </td>
+   <td><button class="light small" onclick="downloadRequest('${r.id}')">Download</button></td>`;
+  tbody.appendChild(tr);
+ });
+}
+
+async function changeRequestStatus(id,status){
+ const records=await getAll("requests");
+ const r=records.find(x=>x.id===id);
+ if(!r)return;
+ r.status=status;
+ await saveRecord("requests",r);
+ refreshAll();
+}
+
+async function downloadRequest(id){
+ const records=await getAll("requests");
+ const r=records.find(x=>x.id===id);
+ if(!r)return;
+ downloadFile("SENGA-"+r.id+".txt",
+ `SENGA SERVICE REQUEST\n\nNumber: ${r.id}\nCustomer: ${r.customer}\nService: ${r.service}\nRegion: ${r.region}\nTown: ${r.town}\nArea: ${r.area}\nDate: ${r.date}\nFees: ${r.fees} TZS\nStatus: ${r.status}\nDescription: ${r.description}`);
+}
+
+/* ==============================================
+   SERVICE ACTIVITIES
+============================================== */
+
+document.getElementById("serviceActivityForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const customer= (await getAll("customers")).find(c=>c.id===activityCustomer.value);
+ if(!customer){toast("Select a registered customer.");return;}
+
+ await saveRecord("activities",{
+  id:uid("ACT"),
+  unit:activityUnit.value,
+  customer:customer.name,
+  customerId:customer.id,
+  date:activityDate.value,
+  reference:activityReference.value,
+  fees:Number(activityFees.value||0),
+  details:activityDetails.value,
+  created:new Date().toISOString()
+ });
+
+ e.target.reset();
+ activityDate.value=today();
+ toast("Activity recorded.");
+ renderActivities();
+});
+
+async function renderActivities(){
+ const records=await getAll("activities");
+ const filtered=records.filter(r=>r.unit===currentUnit?.[0]);
+ const tbody=document.getElementById("activityRows");
+ tbody.innerHTML="";
+ filtered.forEach(r=>{
+  const tr=document.createElement("tr");
+  tr.innerHTML=`
+   <td>${escapeHTML(r.date)}</td>
+   <td>${escapeHTML(r.customer)}</td>
+   <td>${escapeHTML(r.reference)}</td>
+   <td>${money(r.fees)}</td>
+   <td>${escapeHTML(r.details)}</td>`;
+  tbody.appendChild(tr);
+ });
+}
+
+/* ==============================================
+   BOOKINGS
+============================================== */
+
+document.getElementById("bookingForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const customer=(await getAll("customers")).find(c=>c.id===bookingCustomer.value);
+ if(!customer){toast("Select a registered customer.");return;}
+
+ await saveRecord("bookings",{
+  id:uid("BKG"),customerId:customer.id,customer:customer.name,
+  service:bookingService.value,date:bookingDate.value,
+  time:bookingTime.value,location:bookingLocation.value,
+  status:bookingStatus.value,notes:bookingNotes.value,
+  created:new Date().toISOString()
+ });
+ e.target.reset();
+ bookingDate.value=today();
+ toast("Booking saved.");
+ refreshAll();
+});
+
+async function renderBookings(){
+ const records=await getAll("bookings");
+ const tbody=document.getElementById("bookingRows");
+ tbody.innerHTML="";
+ records.forEach(b=>{
+  const tr=document.createElement("tr");
+  tr.innerHTML=`
+   <td>${escapeHTML(b.id)}</td><td>${escapeHTML(b.customer)}</td>
+   <td>${escapeHTML(b.service)}</td><td>${escapeHTML(b.date)}</td>
+   <td>${escapeHTML(b.time)}</td><td>${escapeHTML(b.location)}</td>
+   <td>${escapeHTML(b.status)}</td>
+   <td><button class="danger small" onclick="removeItem('bookings','${b.id}')">Delete</button></td>`;
+  tbody.appendChild(tr);
+ });
+}
+
+/* ==============================================
+   CONTRACT MANAGEMENT
+============================================== */
+
+document.getElementById("contractForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const customer=(await getAll("customers")).find(c=>c.id===contractCustomer.value);
+ if(!customer){toast("Select a registered customer.");return;}
+
+ await saveRecord("contracts",{
+  id:uid("CON"),customerId:customer.id,customer:customer.name,
+  reference:contractReference.value,start:contractStart.value,
+  end:contractEnd.value,value:Number(contractValue.value||0),
+  status:contractStatus.value,description:contractDescription.value
+ });
+ e.target.reset();
+ toast("Contract registered.");
+ refreshAll();
+});
+
+async function renderContracts(){
+ const records=await getAll("contracts");
+ const tbody=document.getElementById("contractRows");
+ tbody.innerHTML="";
+ records.forEach(c=>{
+  const tr=document.createElement("tr");
+  tr.innerHTML=`
+   <td>${escapeHTML(c.reference)}</td><td>${escapeHTML(c.customer)}</td>
+   <td>${escapeHTML(c.start)}</td><td>${escapeHTML(c.end)}</td>
+   <td>${money(c.value)}</td><td>${escapeHTML(c.status)}</td>`;
+  tbody.appendChild(tr);
+ });
+}
+
+/* ==============================================
+   FINANCE
+============================================== */
+
+document.getElementById("paymentForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const customer=(await getAll("customers")).find(c=>c.id===paymentCustomer.value);
+ if(!customer){toast("Select a registered customer.");return;}
+
+ await saveRecord("payments",{
+  id:uid("PAY"),customerId:customer.id,customer:customer.name,
+  requestId:paymentRequest.value,date:paymentDate.value,
+  amount:Number(paymentAmount.value),currency:paymentCurrency.value,
+  method:paymentMethod.value,reference:paymentReference.value,
+  notes:paymentNotes.value
+ });
+ e.target.reset();
+ paymentDate.value=today();
+ toast("Payment recorded.");
+ refreshAll();
+});
+
+async function renderPayments(){
+ const records=await getAll("payments");
+ const tbody=document.getElementById("paymentRows");
+ tbody.innerHTML="";
+ records.forEach(p=>{
+  const tr=document.createElement("tr");
+  tr.innerHTML=`
+   <td>${escapeHTML(p.reference||p.id)}</td>
+   <td>${escapeHTML(p.customer)}</td>
+   <td>${escapeHTML(p.date)}</td>
+   <td>${Number(p.amount).toLocaleString()}</td>
+   <td>${escapeHTML(p.currency)}</td>
+   <td>${escapeHTML(p.method)}</td>`;
+  tbody.appendChild(tr);
+ });
+
+ const totals={};
+ records.forEach(p=>totals[p.currency]=(totals[p.currency]||0)+Number(p.amount));
+ document.getElementById("financeReceipts").textContent=
+  Object.entries(totals).map(([c,v])=>money(v,c)).join(" | ")||"TZS 0";
+}
+
+/* ==============================================
+   DIGITAL DOCUMENTS
+============================================== */
+
+document.getElementById("mediaForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const file=mediaFile.files[0];
+ if(!file)return;
+
+ try{
+  await saveRecord("media",{
+   id:uid("DOC"),title:mediaTitle.value,
+   category:mediaCategory.value,
+   fileName:file.name,type:file.type,
+   size:file.size,blob:file,
+   date:today()
+  });
+  e.target.reset();
+  toast("Document saved in local database.");
+  renderMedia();
+ }catch(error){
+  console.error(error);
+  toast("Unable to save file. Check available storage.");
+ }
+});
+
+async function renderMedia(){
+ const records=await getAll("media");
+ const tbody=document.getElementById("mediaRows");
+ tbody.innerHTML="";
+ records.forEach(m=>{
+  const tr=document.createElement("tr");
+  tr.innerHTML=`
+   <td>${escapeHTML(m.title)}</td>
+   <td>${escapeHTML(m.category)}</td>
+   <td>${escapeHTML(m.fileName)}</td>
+   <td>${escapeHTML(m.date)}</td>
+   <td>
+    <button class="primary small" onclick="downloadMedia('${m.id}')">Download</button>
+    <button class="danger small" onclick="removeItem('media','${m.id}')">Delete</button>
+   </td>`;
+  tbody.appendChild(tr);
+ });
+}
+
+async function downloadMedia(id){
+ const records=await getAll("media");
+ const m=records.find(x=>x.id===id);
+ if(!m)return;
+ const url=URL.createObjectURL(m.blob);
+ const a=document.createElement("a");
+ a.href=url;a.download=m.fileName;a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),3000);
+}
+
+/* ==============================================
+   LEGAL360
+============================================== */
+
+document.getElementById("legalForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const customer=(await getAll("customers")).find(c=>c.id===legalCustomer.value);
+ await saveRecord("legal",{
+  id:uid("LEG"),reference:legalReference.value,
+  customer:customer?.name||"Not specified",
+  category:legalCategory.value,status:legalStatus.value,
+  description:legalDescription.value,date:today()
+ });
+ e.target.reset();
+ toast("Legal matter registered.");
+ renderLegal();
+});
+
+async function renderLegal(){
+ const records=await getAll("legal");
+ const tbody=document.getElementById("legalRows");
+ tbody.innerHTML="";
+ records.forEach(l=>{
+  const tr=document.createElement("tr");
+  tr.innerHTML=`
+   <td>${escapeHTML(l.reference)}</td>
+   <td>${escapeHTML(l.customer)}</td>
+   <td>${escapeHTML(l.category)}</td>
+   <td>${escapeHTML(l.status)}</td>
+   <td>${escapeHTML(l.description)}</td>`;
+  tbody.appendChild(tr);
+ });
+}
+
+/* ==============================================
+   SELECT LISTS
+============================================== */
+
+async function populateCustomerLists(){
+ const customers=await getAll("customers");
+ const ids=[
+  "requestCustomer","bookingCustomer","contractCustomer",
+  "paymentCustomer","activityCustomer","legalCustomer"
+ ];
+
+ ids.forEach(id=>{
+  const select=document.getElementById(id);
+  const previous=select.value;
+  select.innerHTML='<option value="">Select customer</option>';
+  customers.forEach(c=>select.add(new Option(c.name,c.id)));
+  if(customers.some(c=>c.id===previous))select.value=previous;
+ });
+
+ const requests=await getAll("requests");
+ const reqSelect=document.getElementById("paymentRequest");
+ const old=reqSelect.value;
+ reqSelect.innerHTML='<option value="">Not linked</option>';
+ requests.forEach(r=>reqSelect.add(new Option(r.id+" – "+r.customer,r.id)));
+ if(requests.some(r=>r.id===old))reqSelect.value=old;
+}
+
+/* ==============================================
+   REPORTS AND DASHBOARD
+============================================== */
+
+async function refreshAll(){
+ if(!db)return;
+
+ await Promise.all([
+  populateCustomerLists(),
+  renderCustomers(),
+  renderRequests(),
+  renderBookings(),
+  renderContracts(),
+  renderPayments(),
+  renderMedia(),
+  renderLegal()
+ ]);
+
+ const customers=await getAll("customers");
+ const requests=await getAll("requests");
+ const bookings=await getAll("bookings");
+ const payments=await getAll("payments");
+ const contracts=await getAll("contracts");
+
+ document.getElementById("customerCount").textContent=customers.length;
+ document.getElementById("requestCount").textContent=requests.length;
+ document.getElementById("bookingCount").textContent=bookings.length;
+ document.getElementById("reportCustomers").textContent=customers.length;
+ document.getElementById("reportRequests").textContent=requests.length;
+ document.getElementById("reportBookings").textContent=bookings.length;
+ document.getElementById("reportContracts").textContent=contracts.length;
+
+ const tzs=payments.filter(p=>p.currency==="TZS").reduce((s,p)=>s+p.amount,0);
+ document.getElementById("paymentTotal").textContent=money(tzs);
+
+ const recent=document.getElementById("recentRequests");
+ recent.innerHTML="";
+ requests.slice().sort((a,b)=>b.created.localeCompare(a.created))
+ .slice(0,8).forEach(r=>{
+  const tr=document.createElement("tr");
+  tr.innerHTML=`
+   <td>${escapeHTML(r.id)}</td>
+   <td>${escapeHTML(r.customer)}</td>
+   <td>${escapeHTML(r.service)}</td>
+   <td>${escapeHTML(r.date)}</td>
+   <td><span class="status">${escapeHTML(r.status)}</span></td>`;
+  recent.appendChild(tr);
+ });
+
+ const byRequest={};
+ requests.forEach(r=>byRequest[r.id]=r.fees);
+ const paid={};
+ payments.filter(p=>p.currency==="TZS"&&p.requestId)
+ .forEach(p=>paid[p.requestId]=(paid[p.requestId]||0)+p.amount);
+
+ const balance=requests.reduce((sum,r)=>
+  sum+Math.max(0,Number(r.fees)-(paid[r.id]||0)),0);
+
+ document.getElementById("financeBalance").textContent=money(balance);
+ document.getElementById("storageInfo").textContent=
+  "Database: "+DB_NAME+" | Registered stores: "+STORES.length+
+  " | Records: "+(customers.length+requests.length+bookings.length+
+  payments.length+contracts.length);
+}
+
+/* ==============================================
+   EXPORT
+============================================== */
+
+function csvEscape(value){
+ return '"'+String(value??"").replace(/"/g,'""')+'"';
+}
+
+async function exportCSV(store){
+ const records=await getAll(store);
+ if(!records.length){toast("No records available.");return;}
+
+ const fields=[...new Set(records.flatMap(r=>Object.keys(r).filter(k=>k!=="blob")))];
+ const csv=[
+  fields.map(csvEscape).join(","),
+  ...records.map(r=>fields.map(k=>csvEscape(r[k])).join(","))
+ ].join("\r\n");
+
+ downloadFile("SENGA-"+store+"-"+today()+".csv",csv,"text/csv;charset=utf-8");
+}
+
+function downloadFile(name,content,type="text/plain;charset=utf-8"){
+ const blob=new Blob([content],{type});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download=name;a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),3000);
+}
+
+/* ==============================================
+   BACKUP AND RESTORE
+============================================== */
+
+async function backupData(){
+ const backup={
+  system:"SENGA BIZSUITE",
+  version:1,
+  exported:new Date().toISOString(),
+  stores:{}
+ };
+
+ for(const store of STORES){
+  backup.stores[store]=await getAll(store);
+ }
+
+ const blob=new Blob([JSON.stringify(backup,null,2)],{
+  type:"application/json"
+ });
+
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="SENGA-FULL-BACKUP-"+today()+".json";
+ a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),3000);
+ toast("Backup downloaded.");
+}
+
+document.getElementById("restoreFile").addEventListener("change",async e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+
+ try{
+  const data=JSON.parse(await file.text());
+  if(data.system!=="SENGA BIZSUITE"||!data.stores)
+   throw new Error("Invalid SENGA backup.");
+
+  if(!confirm("This will replace current records. Continue?"))return;
+
+  for(const store of STORES){
+   await new Promise((resolve,reject)=>{
+    const tx=db.transaction(store,"readwrite");
+    tx.objectStore(store).clear();
+    tx.oncomplete=resolve;
+    tx.onerror=()=>reject(tx.error);
+   });
+
+   for(const record of (data.stores[store]||[])){
+    await saveRecord(store,record);
+   }
+  }
+
+  toast("Backup restored successfully.");
+  refreshAll();
+ }catch(error){
+  console.error(error);
+  toast("Restore failed. Check backup file.");
+ }finally{
+  e.target.value="";
+ }
+});
+
+/* ==============================================
+   UTILITIES
+============================================== */
+
+function escapeHTML(value){
+ return String(value??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",
+  '"':"&quot;","'":"&#39;"
+ }[c]));
+}
+
+async function removeItem(store,id){
+ if(!confirm("Delete this record?"))return;
+ await deleteRecord(store,id);
+ toast("Record deleted.");
+ refreshAll();
+}
+
+/* ==============================================
+   START APPLICATION
+============================================== */
+
+document.addEventListener("DOMContentLoaded",initialise);
+</script>
+</body>
+</html>
