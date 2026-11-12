@@ -1388,6 +1388,136 @@ async function removeItem(store,id){
 ============================================== */
 
 document.addEventListener("DOMContentLoaded",initialise);
+ /* ==========================================
+   SENGA PREMIUM HOMEPAGE VISUAL UPGRADE
+   ========================================== */
+
+body {
+  background: #071b36;
+  color: #ffffff;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+#nyumbani {
+  position: relative;
+  min-height: 100vh;
+  padding: 100px 24px 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      115deg,
+      rgba(4, 19, 43, 0.94),
+      rgba(7, 54, 103, 0.78),
+      rgba(0, 91, 75, 0.68)
+    ),
+    url("senga-homepage.jpg") center center / cover no-repeat;
+
+  color: #ffffff;
+}
+
+#nyumbani::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(212, 175, 55, 0.22),
+      transparent 35%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 65%,
+      rgba(3, 15, 34, 0.72)
+    );
+}
+
+#nyumbani > * {
+  position: relative;
+  z-index: 1;
+}
+
+.brand {
+  color: #f2cf69;
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.45);
+}
+
+.brand small {
+  color: #ffffff;
+  letter-spacing: 2px;
+}
+
+nav {
+  background: rgba(5, 25, 53, 0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+nav a {
+  color: #ffffff;
+  transition: color 0.25s ease;
+}
+
+nav a:hover {
+  color: #f2cf69;
+}
+
+#nyumbani h1 {
+  color: #ffffff;
+  font-size: clamp(2.3rem, 6vw, 4.8rem);
+  font-weight: 900;
+  line-height: 1.12;
+  text-shadow: 0 5px 22px rgba(0, 0, 0, 0.5);
+}
+
+#nyumbani h2 {
+  color: #f2cf69;
+  font-weight: 800;
+}
+
+#nyumbani p {
+  color: #f1f5fa;
+  line-height: 1.8;
+  max-width: 760px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+#nyumbani button,
+#nyumbani .btn {
+  background: linear-gradient(135deg, #e6c45b, #b78a20);
+  color: #09264d;
+  border: 1px solid #f7df91;
+  border-radius: 30px;
+  padding: 13px 25px;
+  font-weight: 800;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+#nyumbani button:hover,
+#nyumbani .btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 600px) {
+  #nyumbani {
+    min-height: 85vh;
+    padding: 85px 18px 50px;
+    background-position: center center;
+  }
+
+  #nyumbani h1 {
+    font-size: 2.35rem;
+  }
+}
 </script>
 </body>
 </html>
